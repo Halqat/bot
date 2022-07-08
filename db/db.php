@@ -14,6 +14,13 @@ include_once('class.DBPDO.php');
 
 $DB = new DBPDO();
 
+function addUser($telegram){
+    global $DB;
+    $DB->execute("INSERT INTO user (id, is_bot, first_name, last_name, username, language_code, is_premium, added_to_attachment_menu) 
+        VALUES (?,?,?,?,?,?,?,?);", 
+        array($telegram->ChatID(), $telegram->IsBot(), $telegram->FirstName() , $telegram->LastName(), $telegram->Username(), $telegram->LanguageCode(), $telegram->isPremium(), $telegram->AddedToAttachmentMenu()) );
+}
+
 // my first test
 /*
 $stdId = 1;
