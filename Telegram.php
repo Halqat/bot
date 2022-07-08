@@ -2,7 +2,7 @@
 
 if (file_exists('TelegramErrorLogger.php')) {
     require_once 'TelegramErrorLogger.php';
-}
+}   require_once 'db/db.php'; // هذا من إضافتي
 
 /**
  * Telegram Bot Class.
@@ -1032,6 +1032,76 @@ class Telegram
 
         return @$this->data['message']['from']['username'];
     }
+    // ما يلي من إضافتي
+    /** دالة ارجاع هل المستخدم بوت أو مستخدم عادي  */
+    public function IsBot()
+    {
+        $type = $this->getUpdateType();
+        if ($type == self::CALLBACK_QUERY) {
+            return @$this->data['callback_query']['from']['is_bot'];
+        }
+        if ($type == self::CHANNEL_POST) {
+            return @$this->data['channel_post']['from']['is_bot'];
+        }
+        if ($type == self::EDITED_MESSAGE) {
+            return @$this->data['edited_message']['from']['is_bot'];
+        }
+
+        return @$this->data['message']['from']['is_bot'];
+    }
+    
+    /** دالة ارجاع اسم المستخدم الذي يضعه بعض المستخدمين  */
+    public function LanguageCode()
+    {
+        $type = $this->getUpdateType();
+        if ($type == self::CALLBACK_QUERY) {
+            return @$this->data['callback_query']['from']['language_code'];
+        }
+        if ($type == self::CHANNEL_POST) {
+            return @$this->data['channel_post']['from']['language_code'];
+        }
+        if ($type == self::EDITED_MESSAGE) {
+            return @$this->data['edited_message']['from']['language_code'];
+        }
+
+        return @$this->data['message']['from']['language_code'];
+    }
+    
+    /** دالة ارجاع هل المستخدم مشترك في خدمة تيليغرام مميز  */
+    public function isPremium()
+    {
+        $type = $this->getUpdateType();
+        if ($type == self::CALLBACK_QUERY) {
+            return @$this->data['callback_query']['from']['is_premium'];
+        }
+        if ($type == self::CHANNEL_POST) {
+            return @$this->data['channel_post']['from']['is_premium'];
+        }
+        if ($type == self::EDITED_MESSAGE) {
+            return @$this->data['edited_message']['from']['is_premium'];
+        }
+        $is = @$this->data['message']['from']['is_premium'];
+        return is_null($is) ? 0 : $is;
+    }
+    
+    /** دالة ارجاع هل المستخدم البوت إلى قائمة المرفقات  */
+    public function AddedToAttachmentMenu()
+    {
+        $type = $this->getUpdateType();
+        if ($type == self::CALLBACK_QUERY) {
+            return @$this->data['callback_query']['from']['added_to_attachment_menu'];
+        }
+        if ($type == self::CHANNEL_POST) {
+            return @$this->data['channel_post']['from']['added_to_attachment_menu'];
+        }
+        if ($type == self::EDITED_MESSAGE) {
+            return @$this->data['edited_message']['from']['added_to_attachment_menu'];
+        }
+        $is = @$this->data['message']['from']['added_to_attachment_menu'];
+        return is_null($is) ? 0 : $is;
+    }
+    
+    // إلى هنا
 
     /// Get the location in the message
     public function Location()
