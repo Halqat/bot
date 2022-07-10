@@ -23,7 +23,7 @@ function addUser($telegram){
 }
 
 /** دالة إضافة رسالة تيليغرام إلى قاعدة البيانات */
-function insertMessage($api, array $content){
+function insertMessage( array $content ){
     echo ' I am inside insertMessage Function 1!';
     global $DB;
     

@@ -119,11 +119,13 @@ class Telegram
         $url = 'https://api.telegram.org/bot'.$this->bot_token.'/'.$api;
         if ($post) {
             $reply = $this->sendAPIRequest($url, $content);
+            // من إضافتي
             $arr = json_decode($reply, true);
             $content['id'] = $arr['result']['message_id'];
             $content['date'] = date("Y-m-d H:i:s", $arr['result']['date']);
-            $content['sender_chat_id'] = $arr['result']['from']['id'];
-            insertMessage($api, $content); // من إضافتي
+            $content['sender_chat_id'] = $content['user_id'] = $arr['result']['from']['id'];
+            $content['api_method'] = $api;
+            insertMessage($content); 
         } else {
             $reply = $this->sendAPIRequest($url, [], false);
         }
