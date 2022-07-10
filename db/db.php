@@ -14,11 +14,25 @@ include_once('class.DBPDO.php');
 
 $DB = new DBPDO();
 
+/** دالة إضافة مستخدم تيليغرام إلى قاعدة البيانات */
 function addUser($telegram){
     global $DB;
     $DB->execute("INSERT INTO user (id, is_bot, first_name, last_name, username, language_code, is_premium, added_to_attachment_menu) 
         VALUES (?,?,?,?,?,?,?,?);", 
         array($telegram->ChatID(), $telegram->IsBot(), $telegram->FirstName() , $telegram->LastName(), $telegram->Username(), $telegram->LanguageCode(), $telegram->isPremium(), $telegram->AddedToAttachmentMenu()) );
+}
+
+/** دالة إضافة رسالة تيليغرام إلى قاعدة البيانات */
+function insertMessage($api, array $content){
+    echo ' I am inside insertMessage Function 1!';
+    global $DB;
+    
+    $keys = implode(', ',array_keys($content));
+    $values = "'" . implode("', '", array_values($content)) . "'";
+    $sql = "INSERT INTO message ( " .$keys. ") VALUES (" .$values. ")";
+    // $sql = "INSERT INTO message ( id, chat_id ) VALUES (9632,689646315)";
+
+    $DB->execute($sql);
 }
 
 // my first test

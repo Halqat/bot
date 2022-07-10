@@ -2,7 +2,9 @@
 
 if (file_exists('TelegramErrorLogger.php')) {
     require_once 'TelegramErrorLogger.php';
-}   require_once 'db/db.php'; // هذا من إضافتي
+}   // هذا من إضافتي
+require_once 'db/db.php'; 
+date_default_timezone_set("Asia/Riyadh");
 
 /**
  * Telegram Bot Class.
@@ -117,6 +119,11 @@ class Telegram
         $url = 'https://api.telegram.org/bot'.$this->bot_token.'/'.$api;
         if ($post) {
             $reply = $this->sendAPIRequest($url, $content);
+            $arr = json_decode($reply, true);
+            $content['id'] = $arr['result']['message_id'];
+            $content['date'] = date("Y-m-d H:i:s", $arr['result']['date']);
+            $content['sender_chat_id'] = $arr['result']['from']['id'];
+            insertMessage($api, $content); // من إضافتي
         } else {
             $reply = $this->sendAPIRequest($url, [], false);
         }
