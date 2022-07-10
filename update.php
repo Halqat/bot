@@ -17,7 +17,8 @@ $telegram = new Telegram($bot_token);
 /* $result = $telegram->getData();
 $text = $result["message"] ["text"];
 $chat_id = $result["message"] ["chat"]["id"]; */
-addUser($telegram);
+// addUser($telegram);
+addUserAndChat( $telegram->FromUser(), $telegram->Chat() );
 
 // Take text and chat_id from the message
 $text = $telegram->Text();

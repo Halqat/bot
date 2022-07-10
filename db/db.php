@@ -14,17 +14,26 @@ include_once('class.DBPDO.php');
 
 $DB = new DBPDO();
 
-/** دالة إضافة مستخدم تيليغرام إلى قاعدة البيانات */
-function addUser($telegram){
+/** دالة إضافة مستخدم و محادثة إلى قاعدة البيانات */
+function addUserAndChat( array $userArray, array $chatArray ){
     global $DB;
-    $DB->execute("INSERT INTO user (id, is_bot, first_name, last_name, username, language_code, is_premium, added_to_attachment_menu) 
-        VALUES (?,?,?,?,?,?,?,?);", 
-        array($telegram->ChatID(), $telegram->IsBot(), $telegram->FirstName() , $telegram->LastName(), $telegram->Username(), $telegram->LanguageCode(), $telegram->isPremium(), $telegram->AddedToAttachmentMenu()) );
+    $userArray['created_at'] = $userArray['updated_at'] = $chatArray['created_at'] = $chatArray['updated_at'] = date('Y-m-d H:i:s');
+    $keys = implode(', ',array_keys($userArray));
+    $values = "'" . implode("', '", array_values($userArray)) . "'";
+    $sql = "INSERT INTO user ( " .$keys. ") VALUES (" .$values. "); ";
+    // $DB->execute($sql);
+    
+    $keys = implode(', ',array_keys($chatArray));
+    $values = "'" . implode("', '", array_values($chatArray)) . "'";
+    $sql .= "INSERT INTO chat ( " .$keys. ") VALUES (" .$values. "); ";
+    // $DB->execute($sql );
+    
+    $sql .= "INSERT INTO user_chat ( user_id, chat_id ) VALUES (".$userArray['id'].",".$chatArray['id']."); ";
+    $DB->execute($sql);
 }
 
 /** دالة إضافة رسالة تيليغرام إلى قاعدة البيانات */
 function insertMessage( array $content ){
-    echo ' I am inside insertMessage Function 1!';
     global $DB;
     
     $keys = implode(', ',array_keys($content));

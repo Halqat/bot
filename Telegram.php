@@ -1110,6 +1110,43 @@ class Telegram
         return is_null($is) ? 0 : $is;
     }
     
+    /** دالة ارجاع مصفوفة قيم المستخدم الواصل منه رسالة تيليغرام  */
+    public function FromUser()
+    {
+        $type = $this->getUpdateType();
+        if ($type == self::CALLBACK_QUERY) {
+            return @$this->data['callback_query']['from'];
+        }
+        if ($type == self::CHANNEL_POST) {
+            return @$this->data['channel_post']['from'];
+        }
+        if ($type == self::EDITED_MESSAGE) {
+            return @$this->data['edited_message']['from'];
+        }
+        return @$this->data['message']['from'] ;
+    }
+
+    /** دالة ارجاع مصفوفة قيم المحادثة الواصل منه رسالة تيليغرام  */
+    public function Chat()
+    {
+        $type = $this->getUpdateType();
+        if ($type == self::CALLBACK_QUERY) {
+            return @$this->data['callback_query']['message']['chat'];
+        }
+        if ($type == self::CHANNEL_POST) {
+            return @$this->data['channel_post']['chat'];
+        }
+        if ($type == self::EDITED_MESSAGE) {
+            return @$this->data['edited_message']['chat'];
+        }
+        if ($type == self::INLINE_QUERY) {
+            return @$this->data['inline_query']['from'];
+        }
+
+        return $this->data['message']['chat'];
+    }
+
+
     // إلى هنا
 
     /// Get the location in the message
