@@ -1,0 +1,21 @@
+{
+    "update_id": 211627776,
+    "message": {
+        "message_id": 91,
+        "from": {
+            "id": 689646315,
+            "is_bot": false,
+            "first_name": "يوسف",
+            "last_name": "السلمان",
+            "language_code": "en"
+        },
+        "chat": {
+            "id": 689646315,
+            "first_name": "يوسف",
+            "last_name": "السلمان",
+            "type": "private"
+        },
+        "date": 1634524718,
+        "text": "������"
+    }
+}

@@ -18,6 +18,7 @@ $telegram = new Telegram($bot_token);
 $text = $result["message"] ["text"];
 $chat_id = $result["message"] ["chat"]["id"]; */
 // addUser($telegram);
+// addMessage( $telegram->getData()['message'] );
 addUserAndChat( $telegram->FromUser(), $telegram->Chat() );
 
 // Take text and chat_id from the message
@@ -55,6 +56,9 @@ if (!empty($data['inline_query'])) {
 
 // Check if the text is a command
 if (!is_null($text) && !is_null($chat_id)) {
+    // تخزين الرسالة القادمة من المستخدم
+    insertMessage(['chat_id'=>$chat_id, 'sender_chat_id'=>$chat_id, 'id'=>$telegram->MessageID(), 'text'=>$text, 'date'=>date("Y-m-d H:i:s", $telegram->Date()), 'api_method'=>'رسالة عادية']);
+
     if ($text == '/test') {
         if ($telegram->messageFromGroup()) {
             $reply = 'Chat Group';

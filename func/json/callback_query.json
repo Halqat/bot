@@ -1,0 +1,53 @@
+{
+    "ok": true,
+    "result": [
+      {
+        "update_id": 660681695,
+        "callback_query": {
+          "id": "2962008371011563903",
+          "from": {
+            "id": 689646315,
+            "is_bot": false,
+            "first_name": "أبو",
+            "last_name": "نصرالله",
+            "username": "AboNasrallah",
+            "language_code": "ar"
+          },
+          "message": {
+            "message_id": 251,
+            "from": {
+              "id": 5478305661,
+              "is_bot": true,
+              "first_name": "fj",
+              "username": "rumailahbot"
+            },
+            "chat": {
+              "id": 689646315,
+              "first_name": "أبو",
+              "last_name": "نصرالله",
+              "username": "AboNasrallah",
+              "type": "private"
+            },
+            "date": 1657559747,
+            "text": "This is an InlineKeyboard Test with Callbacks",
+            "reply_markup": {
+              "inline_keyboard": [
+                [
+                  {
+                    "text": "Callback 1",
+                    "callback_data": "1"
+                  },
+                  {
+                    "text": "Callback 2",
+                    "callback_data": "2"
+                  }
+                ]
+              ]
+            }
+          },
+          "chat_instance": "-6377075888643304294",
+          "data": "1"
+        }
+      }
+    ]
+  }

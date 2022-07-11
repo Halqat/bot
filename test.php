@@ -21,9 +21,13 @@ $content = array('chat_id' => 689646315, 'text' => 'from mualy.net//bot//test.ph
 
 $telegram->sendMessage( $content );
 
-// $sth = $db->prepare("INSERT INTO message (".$keys.") VALUES (".$values.")");
-// $res = $sth->execute($prep);
-
-
-// مثال على دالة startsWith()
-// echo strpos('dfsdf','d') === 0;
+/*
+    getMe
+    https://api.telegram.org/bot5478305661:AAGQRXZcIDzGABMlEbSRYVR3abyfxAKMR9k/getMe
+    getUpdates
+    https://api.telegram.org/bot5478305661:AAGQRXZcIDzGABMlEbSRYVR3abyfxAKMR9k/getUpdates
+    setWebhook
+    https://api.telegram.org/bot5478305661:AAGQRXZcIDzGABMlEbSRYVR3abyfxAKMR9k/setWebhook?url=https://mualy.net/bot/update.php
+    deleteWebhook
+    https://api.telegram.org/bot5478305661:AAGQRXZcIDzGABMlEbSRYVR3abyfxAKMR9k/deleteWebhook
+*/
