@@ -32,8 +32,8 @@ if (!empty($callback_query)) {
     $content = ['chat_id' => $telegram->Callback_ChatID(), 'text' => $reply];
     // $telegram->sendMessage($content);
 
-    // $content = ['callback_query_id' => $telegram->Callback_ID(), 'text' => $reply, 'show_alert' => true];
-    $content = ['callback_query_id' => $telegram->Callback_ID(), 'text' => json_encode( $telegram->TelegramUpdate() ), 'show_alert' => true];
+    $content = ['callback_query_id' => $telegram->Callback_ID(), 'text' => $reply, 'show_alert' => true];
+    // $content = ['callback_query_id' => $telegram->Callback_ID(), 'text' => json_encode( $telegram->TelegramUpdate() ), 'show_alert' => true];
     $telegram->answerCallbackQuery($content);
     insertInDB('callback_query', $telegram->CallbackQuery() );
     insertInDB('telegram_update',$telegram->TelegramUpdate() );
@@ -57,15 +57,37 @@ if (!empty($data['inline_query'])) {
     }
 }
 
-// إذا أرسل المستخدم رقم جواله
-if(!empty($data['message']['contact'])){
-    insertInDB( 'message', ['chat_id'=>$chat_id, 'sender_chat_id'=>$chat_id, 'id'=>$telegram->MessageID(), 'contact'=>$data['message']['contact']['phone_number'], 'date'=>date("Y-m-d H:i:s", $telegram->Date()), 'api_method'=>'📱 رقم جوال']);
+// إذا أرسل المستخدم أي رسالة
+if(!empty( $data['message'] )){
+    $message = $data['message'];
+    $record = ['chat_id'=>$chat_id, 'sender_chat_id'=>$chat_id, 'id'=>$telegram->MessageID(), 'date'=>date("Y-m-d H:i:s", $telegram->Date())];
+
+    // إذا أرسل المستخدم رقم جواله
+    if(!empty($message['contact'])){
+        $record['contact'] = $message['contact']['phone_number'];
+        $record['api_method'] ='📱 رقم جوال';
+    }
+
+    // إذا أرسل المستخدم موقع جغرافي
+    if(!empty($message['location'])){
+        $record['location'] = "latitude:". $message['location']['latitude'].", longitude:". $message['location']['longitude']  ;
+        $record['api_method'] ='📍 موقع جغرافي';
+    }
+    
+    // إذا أرسل المستخدم رسالة نصية
+    if(!empty($message['text'])){
+        $record['text'] = $text;
+        $record['api_method'] ='✉ رسالة نصية';
+    }
+
+
+    // تخزين الرسالة مهما كان نوعها في قاعدة البيانات
+    insertInDB( 'message', $record );
+    insertInDB( 'telegram_update', [ 'id'=>$data['update_id'], 'chat_id'=>$chat_id, 'message_id'=>$telegram->MessageID()] );
 }
 
 // إذا الرسالة جائت بأمر أو نص عادي
 if (!is_null($text) && !is_null($chat_id)) {
-    // تخزين الرسالة القادمة من المستخدم
-    insertInDB( 'message', ['chat_id'=>$chat_id, 'sender_chat_id'=>$chat_id, 'id'=>$telegram->MessageID(), 'text'=>$text, 'date'=>date("Y-m-d H:i:s", $telegram->Date()), 'api_method'=>'رسالة عادية✉']);
 
     if ($text == '/test') {
         if ($telegram->messageFromGroup()) {

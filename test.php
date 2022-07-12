@@ -9,18 +9,18 @@
     $telegram = new Telegram($bot_token);
 
 
-$content = array(
+$record = array(
     'id' => 2962008371011563903,
     'chat_id' => 689646315,
-    'user_id' => 689646315,
-    'message_id' => 251 ,
+    // 'user_id' => 689646315,
+    'message_id' => 292 ,
     // 'photo' =>'my_photo',
     // 'caption' => 'my_caption',
     // 'game' => 'myGame',
     // 'text' => 'from mualy.net//bot//test.php'
 );
 
-print_r( insertInDB( 'callback_query', $content ));
+print_r( insertInDB( 'telegram_update', $record ));
 
 /*
     getMe
