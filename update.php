@@ -57,10 +57,15 @@ if (!empty($data['inline_query'])) {
     }
 }
 
+// إذا أرسل المستخدم رقم جواله
+if(!empty($data['message']['contact'])){
+    insertInDB( 'message', ['chat_id'=>$chat_id, 'sender_chat_id'=>$chat_id, 'id'=>$telegram->MessageID(), 'contact'=>$data['message']['contact']['phone_number'], 'date'=>date("Y-m-d H:i:s", $telegram->Date()), 'api_method'=>'📱 رقم جوال']);
+}
+
 // إذا الرسالة جائت بأمر أو نص عادي
 if (!is_null($text) && !is_null($chat_id)) {
     // تخزين الرسالة القادمة من المستخدم
-    insertInDB( 'message', ['chat_id'=>$chat_id, 'sender_chat_id'=>$chat_id, 'id'=>$telegram->MessageID(), 'text'=>$text, 'date'=>date("Y-m-d H:i:s", $telegram->Date()), 'api_method'=>'رسالة عادية']);
+    insertInDB( 'message', ['chat_id'=>$chat_id, 'sender_chat_id'=>$chat_id, 'id'=>$telegram->MessageID(), 'text'=>$text, 'date'=>date("Y-m-d H:i:s", $telegram->Date()), 'api_method'=>'رسالة عادية✉']);
 
     if ($text == '/test') {
         if ($telegram->messageFromGroup()) {

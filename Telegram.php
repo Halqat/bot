@@ -125,7 +125,7 @@ class Telegram
             $content['date'] = date("Y-m-d H:i:s", $arr['result']['date']);
             $content['sender_chat_id'] = $content['user_id'] = $arr['result']['from']['id'];
             $content['api_method'] = $api;
-            insertInDB( 'message', $content); 
+            insertInDB( 'message', $content);
         } else {
             $reply = $this->sendAPIRequest($url, [], false);
         }
