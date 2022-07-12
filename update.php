@@ -14,8 +14,8 @@ $bot_token = '5478305661:AAGQRXZcIDzGABMlEbSRYVR3abyfxAKMR9k';
 $telegram = new Telegram($bot_token);
 
 // بعض المتغيرات
-/* $result = $telegram->getData();
-$text = $result["message"] ["text"];
+$result = $telegram->getData();
+/*$text = $result["message"] ["text"];
 $chat_id = $result["message"] ["chat"]["id"]; */
 // addUser($telegram);
 // addMessage( $telegram->getData()['message'] );
@@ -25,15 +25,18 @@ addUserAndChat( $telegram->FromUser(), $telegram->Chat() );
 $text = $telegram->Text();
 $chat_id = $telegram->ChatID();
 
-// Test CallBack
+// إذا جاء رد بالضغط على زر رسالة CallBack
 $callback_query = $telegram->Callback_Query();
 if (!empty($callback_query)) {
     $reply = 'Callback value '.$telegram->Callback_Data();
     $content = ['chat_id' => $telegram->Callback_ChatID(), 'text' => $reply];
-    $telegram->sendMessage($content);
+    // $telegram->sendMessage($content);
 
-    $content = ['callback_query_id' => $telegram->Callback_ID(), 'text' => $reply, 'show_alert' => true];
+    // $content = ['callback_query_id' => $telegram->Callback_ID(), 'text' => $reply, 'show_alert' => true];
+    $content = ['callback_query_id' => $telegram->Callback_ID(), 'text' => json_encode( $telegram->TelegramUpdate() ), 'show_alert' => true];
     $telegram->answerCallbackQuery($content);
+    insertInDB('callback_query', $telegram->CallbackQuery() );
+    insertInDB('telegram_update',$telegram->TelegramUpdate() );
 }
 
 //Test Inline
@@ -54,10 +57,10 @@ if (!empty($data['inline_query'])) {
     }
 }
 
-// Check if the text is a command
+// إذا الرسالة جائت بأمر أو نص عادي
 if (!is_null($text) && !is_null($chat_id)) {
     // تخزين الرسالة القادمة من المستخدم
-    insertMessage(['chat_id'=>$chat_id, 'sender_chat_id'=>$chat_id, 'id'=>$telegram->MessageID(), 'text'=>$text, 'date'=>date("Y-m-d H:i:s", $telegram->Date()), 'api_method'=>'رسالة عادية']);
+    insertInDB( 'message', ['chat_id'=>$chat_id, 'sender_chat_id'=>$chat_id, 'id'=>$telegram->MessageID(), 'text'=>$text, 'date'=>date("Y-m-d H:i:s", $telegram->Date()), 'api_method'=>'رسالة عادية']);
 
     if ($text == '/test') {
         if ($telegram->messageFromGroup()) {

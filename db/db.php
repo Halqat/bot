@@ -33,6 +33,15 @@ function addUserAndChat( array $userArray, array $chatArray ){
     $DB->execute($sql);
 }
 
+/** دالة إضافة سجل في جدول في قاعدة البيانات */
+function insertInDB( $table, array $fields ){
+    global $DB;
+
+    $keys = implode(', ',array_keys($fields));
+    $values = "'" . implode("', '", array_values($fields)) . "'";
+    return $DB->execute("INSERT INTO ".$table." ( " .$keys. ") VALUES (" .$values. "); " );
+}
+
 /** دالة إضافة رسالة و مستخدم و محادثة إلى قاعدة البيانات */
 /* function addMessage( array $data ){
     global $DB;
@@ -58,17 +67,6 @@ function addUserAndChat( array $userArray, array $chatArray ){
 
 } */
 
-/** دالة إضافة رسالة تيليغرام إلى قاعدة البيانات */
-function insertMessage( array $content ){
-    global $DB;
-    
-    $keys = implode(', ',array_keys($content));
-    $values = "'" . implode("', '", array_values($content)) . "'";
-    $sql = "INSERT INTO message ( " .$keys. ") VALUES (" .$values. ")";
-    // $sql = "INSERT INTO message ( id, chat_id ) VALUES (9632,689646315)";
-
-    $DB->execute($sql);
-}
 
 // my first test
 /*

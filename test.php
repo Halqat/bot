@@ -9,17 +9,18 @@
     $telegram = new Telegram($bot_token);
 
 
-$insData = array(
-    'id' => 1212,
+$content = array(
+    'id' => 2962008371011563903,
     'chat_id' => 689646315,
-    'photo' =>'my_photo',
-    'caption' => 'my_caption',
-    'game' => 'myGame',
+    'user_id' => 689646315,
+    'message_id' => 251 ,
+    // 'photo' =>'my_photo',
+    // 'caption' => 'my_caption',
+    // 'game' => 'myGame',
+    // 'text' => 'from mualy.net//bot//test.php'
 );
 
-$content = array('chat_id' => 689646315, 'text' => 'from mualy.net//bot//test.php', 'message_auto_delete_time'=> 5);
-
-$telegram->sendMessage( $content );
+print_r( insertInDB( 'callback_query', $content ));
 
 /*
     getMe

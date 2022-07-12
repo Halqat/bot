@@ -125,7 +125,7 @@ class Telegram
             $content['date'] = date("Y-m-d H:i:s", $arr['result']['date']);
             $content['sender_chat_id'] = $content['user_id'] = $arr['result']['from']['id'];
             $content['api_method'] = $api;
-            insertMessage($content); 
+            insertInDB( 'message', $content); 
         } else {
             $reply = $this->sendAPIRequest($url, [], false);
         }
@@ -1146,6 +1146,17 @@ class Telegram
         return $this->data['message']['chat'];
     }
 
+    /** دالة إرجاع محتويات رسالة الضغط على زر callback */
+    public function CallbackQuery(){
+        $j = @$this->data['callback_query'];
+        return [ 'id'=>$j['id'], 'user_id'=>$j['from']['id'], 'chat_id'=>$j['message']['chat']['id'], 'message_id'=>$j['message']['message_id'], 'chat_instance'=>$j['chat_instance'], 'data'=>$j['data'], 'created_at'=>date('Y-m-d H:i:s') ] ;
+    }
+
+    /** المحتويات التي سوف تخزن في جدول تحديثات التيليغرام */
+    public function TelegramUpdate(){
+        $j = @$this->data['callback_query'];
+        return [ 'id'=>@$this->data['update_id'], 'chat_id'=>$j['message']['chat']['id'], 'message_id'=>$j['message']['message_id'], 'callback_query_id' => $j['id'] ] ;
+    }
 
     // إلى هنا
 
