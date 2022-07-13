@@ -111,7 +111,10 @@ if(!empty( $data['message'] )){
     if(!empty($message['forward_from'])) $record['forward_from'] = $message['forward_from']['id'];
     if(!empty($message['forward_from_chat'])) $record['forward_from_chat'] = $message['forward_from_chat']['chat']['id'];
     if(!empty($message['forward_date'])) $record['forward_date'] = date("Y-m-d H:i:s", $message['forward_date']);
-    if(!empty($message['reply_to_message'])) {$record['reply_to_chat'] = $message['reply_to_message']; $record['reply_to_message']['from']['id'] = $message['reply_to_message']['message_id'];}
+    if(!empty($message['reply_to_message'])) {
+            $record['reply_to_chat'] = $message['reply_to_message']['chat']['id']; 
+            $record['reply_to_message'] = $message['reply_to_message']['message_id'];
+        }
     if(!empty($message['edit_date'])) $record['edit_date'] = date("Y-m-d H:i:s", $message['edit_date']);
 
     // إذا أرسل المستخدم رسالة نصية
@@ -130,7 +133,7 @@ if (!is_null($text) && !is_null($chat_id)) {
         if ($telegram->messageFromGroup()) {
             $reply = 'Chat Group';
         } else {
-            $reply = 'محادثة غير جماعية - مفردة';
+            $reply = 'محادثة غير جماعية - فردية';
         }
         // Create option for the custom keyboard. Array of array string
         $option = [['A', 'B'], ['C', 'D']];
@@ -138,6 +141,14 @@ if (!is_null($text) && !is_null($chat_id)) {
         $keyb = $telegram->buildKeyBoard($option);
         $content = ['chat_id' => $chat_id, 'reply_markup' => $keyb, 'text' => $reply];
         $telegram->sendMessage($content);
+    } elseif ($text == '/loc') {
+        $askContact = $telegram->buildKeyboardButton('مشاركة رقم الجوال 📲', true, false);
+        $asklocation = $telegram->buildKeyboardButton('مشاركة موقع جغرافي 📍', false, true);
+        $content = ['chat_id' => $chat_id, 
+            'reply_markup' => $telegram->buildKeyBoard( [[$askContact],[$asklocation]] ),
+            'text' => 'شارك رقم الجوال و الموقع الجغرافي'];
+        $telegram->sendMessage( $content );
+        
     } elseif ($text == '/git') {
         $reply = 'Check me on GitHub: https://github.com/Eleirbag89/TelegramBotPHP';
         // Build the reply array
