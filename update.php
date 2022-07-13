@@ -10,6 +10,7 @@ include_once('func/stringFunc.php');
 
 // Set the bot TOKEN
 $bot_token = '5478305661:AAGQRXZcIDzGABMlEbSRYVR3abyfxAKMR9k';
+$bot_id = 5478305661;
 // Instances the class
 $telegram = new Telegram($bot_token);
 
@@ -60,7 +61,7 @@ if (!empty($data['inline_query'])) {
 // إذا أرسل المستخدم أي رسالة
 if(!empty( $data['message'] )){
     $message = $data['message'];
-    $record = ['chat_id'=>$chat_id, 'sender_chat_id'=>$chat_id, 'id'=>$telegram->MessageID(), 'date'=>date("Y-m-d H:i:s", $telegram->Date())];
+    $record = ['chat_id'=>$chat_id, 'user_id'=>$bot_id, 'sender_chat_id'=>$chat_id, 'id'=>$telegram->MessageID(), 'date'=>date("Y-m-d H:i:s", $telegram->Date())];
 
     // إذا أرسل المستخدم رقم جواله
     if(!empty($message['contact'])){
@@ -87,14 +88,34 @@ if(!empty( $data['message'] )){
         $record['api_method'] ='📄 مستند';
     }
 
+    // إذا أرسل المستخدم فيديو
+    elseif(!empty($message['video'])){ $record['video']=json_encode($message['video']); $record['api_method']='🎞 فيديو'; }
+    // إذا أرسل المستخدم مذكرة فيديو
+    elseif(!empty($message['video_note'])){$record['video_note']=json_encode($message['video_note']); $record['api_method']='🎥 مذكرة فيديو';}
+    // إذا أرسل المستخدم صوت
+    elseif(!empty($message['voice'])){ $record['voice'] = json_encode( $message['voice'] ); $record['api_method'] ='🔊 صوت'; }
+    elseif(!empty($message['audio'])){ $record['audio'] = json_encode( $message['audio'] ); $record['api_method'] ='🎵 مقطع صوتي'; }
+    // إذا أرسل المستخدم ملصق
+    elseif(!empty($message['sticker'])){ $record['sticker']=json_encode($message['sticker']); $record['api_method'] ='😀 ملصق'; }
+    elseif(!empty($message['animation'])){ $record['animation']=json_encode($message['animation']); $record['api_method'] ='💢 صورة متحركة'; }
+    elseif(!empty($message['game'])){ $record['game']=json_encode($message['game']); $record['api_method'] ='🎮 لعبة'; }
+    elseif(!empty($message['venue'])){ $record['venue']=json_encode($message['venue']); $record['api_method'] ='venue'; }
+    elseif(!empty($message['dice'])){ $record['dice']=json_encode($message['dice']); $record['api_method'] ='dice'; }
+    elseif(!empty($message['poll'])){ $record['poll']=json_encode($message['poll']); $record['api_method'] ='🗳 استفتاء'; }
+
     // إذا أحتوى الملف أو الصورة أو الصوت على عنوان
     if(!empty($message['caption'])) $record['caption'] = $message['caption'];
+    if(!empty($message['caption_entities'])) $record['caption_entities']=json_encode( $message['caption_entities']);
+    if(!empty($message['entities'])) $record['entities']=json_encode( $message['entities']);
+    if(!empty($message['sender_chat'])) $record['sender_chat_id'] = $message['sender_chat']['id'];
+    if(!empty($message['forward_from'])) $record['forward_from'] = $message['forward_from']['id'];
+    if(!empty($message['forward_from_chat'])) $record['forward_from_chat'] = $message['forward_from_chat']['chat']['id'];
+    if(!empty($message['forward_date'])) $record['forward_date'] = date("Y-m-d H:i:s", $message['forward_date']);
+    if(!empty($message['reply_to_message'])) {$record['reply_to_chat'] = $message['reply_to_message']; $record['reply_to_message']['from']['id'] = $message['reply_to_message']['message_id'];}
+    if(!empty($message['edit_date'])) $record['edit_date'] = date("Y-m-d H:i:s", $message['edit_date']);
 
     // إذا أرسل المستخدم رسالة نصية
-    if(!empty($message['text'])){
-        $record['text'] = $text;
-        $record['api_method'] ='✉ رسالة نصية';
-    }
+    if(!empty($message['text'])){ $record['text'] = $text; $record['api_method'] ='✉ رسالة نصية'; }
 
 
     // تخزين الرسالة مهما كان نوعها في قاعدة البيانات
