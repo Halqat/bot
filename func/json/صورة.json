@@ -1,0 +1,56 @@
+{
+    "ok": true,
+    "result": {
+        "update_id": 211631209,
+        "message": {
+            "message_id": 7166,
+            "from": {
+            "id": 689646315,
+            "is_bot": false,
+            "first_name": "يوسف",
+            "last_name": "السلمان",
+            "language_code": "en"
+            },
+            "chat": {
+            "id": 689646315,
+            "first_name": "يوسف",
+            "last_name": "السلمان",
+            "type": "private"
+            },
+            "date": 1654350789,
+            "reply_to_message": {
+            "message_id": 7162,
+            "from": {
+                "id": 2066534369,
+                "is_bot": true,
+                "first_name": "بوت حلقات الولاء",
+                "username": "Mualybot"
+            },
+            "chat": {
+                "id": 689646315,
+                "first_name": "يوسف",
+                "last_name": "السلمان",
+                "type": "private"
+            },
+            "date": 1654350287,
+            "text": "اضغط على رمز المشبك 📎 ثم اختر الصورة، ثم ضغط الصورة قبل الارسال\norder#:465"
+            },
+            "photo": [
+            {
+                "file_id": "AgACAgQAAxkBAAIb_mKbY8Wfu8Ocfxehz-wnYtKEwbmMAAKUuTEbt6jgUIzS4KU65A91AQADAgADcwADJAQ",
+                "file_unique_id": "AQADlLkxG7eo4FB4",
+                "file_size": 1385,
+                "width": 71,
+                "height": 90
+            },
+            {
+                "file_id": "AgACAgQAAxkBAAIb_mKbY8Wfu8Ocfxehz-wnYtKEwbmMAAKUuTEbt6jgUIzS4KU65A91AQADAgADbQADJAQ",
+                "file_unique_id": "AQADlLkxG7eo4FBy",
+                "file_size": 10401,
+                "width": 241,
+                "height": 307
+            }
+            ]
+        }
+    }
+}

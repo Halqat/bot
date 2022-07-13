@@ -70,10 +70,26 @@ if(!empty( $data['message'] )){
 
     // إذا أرسل المستخدم موقع جغرافي
     if(!empty($message['location'])){
-        $record['location'] = "latitude:". $message['location']['latitude'].", longitude:". $message['location']['longitude']  ;
+        // $record['location'] = "latitude:". $message['location']['latitude'].", longitude:". $message['location']['longitude']  ;
+        $record['location'] = json_encode( $message['location']);
         $record['api_method'] ='📍 موقع جغرافي';
     }
     
+    // إذا أرسل المستخدم صورة
+    if(!empty($message['photo'])){
+        $record['photo'] = json_encode( $message['photo'] );
+        $record['api_method'] ='🖼 صورة';
+    }
+
+    // إذا أرسل المستخدم مستند أو ملف
+    if(!empty($message['document'])){
+        $record['document'] = json_encode( $message['document'] );
+        $record['api_method'] ='📄 مستند';
+    }
+
+    // إذا أحتوى الملف أو الصورة أو الصوت على عنوان
+    if(!empty($message['caption'])) $record['caption'] = $message['caption'];
+
     // إذا أرسل المستخدم رسالة نصية
     if(!empty($message['text'])){
         $record['text'] = $text;
